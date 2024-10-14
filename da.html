@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sim Craft Countdown">
+    <title>Sim Craft - Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            background-image: url('/mnt/data/New_Project_-_2024-10-01T184406.png'); /* Correct image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .nav {
+            width: 100%;
+            background-color: rgba(255, 190, 11, 0.8); /* Slight transparency */
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 20px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .countdown-container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #f8f8f8;
+        }
+
+        #countdown-timer {
+            font-size: 40px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .time-box {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 60px;
+            color: #fff;
+        }
+
+        .time-box label {
+            font-size: 20px;
+            color: #ffd700;
+        }
+
+        /* Join Server Section */
+        .join-server {
+            margin-top: 20px;
+        }
+
+        .join-server button {
+            padding: 15px 30px;
+            background-color: #4caf50;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .join-server button:hover {
+            background-color: #45a049;
+        }
+
+        /* Hide/show sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="nav">
+        <a id="show-countdown" onclick="showSection('countdown')">Countdown</a>
+        <a id="show-join-server" onclick="showSection('join-server')">Join Server</a>
+    </div>
+
+    <!-- Countdown Section -->
+    <div id="countdown" class="section active">
+        <div class="countdown-container">
+            <h1>Update Coming In:</h1>
+            <div id="countdown-timer">
+                <div class="time-box">
+                    <span id="days"></span>
+                    <label>Days</label>
+                </div>
+                <div class="time-box">
+                    <span id="hours"></span>
+                    <label>Hours</label>
+                </div>
+                <div class="time-box">
+                    <span id="minutes"></span>
+                    <label>Minutes</label>
+                </div>
+                <div class="time-box">
+                    <span id="seconds"></span>
+                    <label>Seconds</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Server Section -->
+    <div id="join-server" class="section">
+        <div class="join-server">
+            <button onclick="window.open('https://www.roblox.com/groups/34697742/Sim-Craft#!/about', '_blank')">Join Our Server</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to show and hide sections based on the selected tab
+        function showSection(sectionId) {
+            // Hide all sections
+            var sections = document.querySelectorAll('.section');
+            sections.forEach(function(section) {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            var selectedSection = document.getElementById(sectionId);
+            selectedSection.classList.add('active');
+        }
+
+        // Set the countdown date (7 days from now)
+        const countdownDate = new Date();
+        countdownDate.setDate(countdownDate.getDate() + 7);
+
+        // Update the countdown every second
+        const countdownFunction = setInterval(function() {
+            // Get current date and time
+            const now = new Date().getTime();
+
+            // Calculate time left until the target date
+            const distance = countdownDate.getTime() - now;
+
+            // Time calculations for days, hours, minutes, and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result
+            document.getElementById("days").innerHTML = days;
+            document.getElementById("hours").innerHTML = hours;
+            document.getElementById("minutes").innerHTML = minutes;
+            document.getElementById("seconds").innerHTML = seconds;
+
+            // If the countdown is over, display a message
+            if (distance < 0) {
+                clearInterval(countdownFunction);
+                document.getElementById("countdown-timer").innerHTML = "The update has arrived!";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+
